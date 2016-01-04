@@ -3,6 +3,9 @@ library(leaflet)
 library(magrittr)
 library(sp)
 library(htmltools)
+library(RColorBrewer)
+
+source("helper.R")
 
 
 # röd<-colorFactor("Reds", uv84$NAMN)
@@ -28,7 +31,7 @@ shinyServer(function(input, output, session) {
 
   
   färg<-reactive({
-    colorFactor(input$radioB, uv84$NAMN)
+    colorFactor(input$radioB, testata$favorit)
     # toupper(input$radioB)
     
   })
@@ -39,8 +42,19 @@ shinyServer(function(input, output, session) {
     leafletProxy("map")%>%
       clearShapes()%>%
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-                  popup = htmlEscape(uv84$NAMN), color = ~pal(uv84$NAMN))
+                  popup = htmlEscape(uv84$NAMN), color = ~pal(testata$favorit))
    
+  })
+  
+  observe({
+  
+    områden<-karta(input$var)
+    factpal <- colorFactor(topo.colors(5), områden$favorit)
+    leafletProxy("map")%>%
+      clearShapes()%>%
+      addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
+                  popup = htmlEscape(områden$favorit), color = ~factpal(områden$favorit))
+    
   })
   
 })

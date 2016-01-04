@@ -24,7 +24,7 @@ mainPanel(leafletOutput("map"), textOutput("dynamicText"),
           
           selectInput("radioB", "Färg",
                        choices = c("Greens", "Reds", "Blues"))
-                        
+
           
 
 ))
