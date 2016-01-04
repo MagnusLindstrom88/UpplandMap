@@ -3,9 +3,6 @@ library(leaflet)
 library(magrittr)
 library(sp)
 
-# 
-# shinyUI(fluidPage(leafletOutput("myMap")))
-#   
 
 shinyUI(fluidPage(
   titlePanel("Title panel"),
@@ -16,13 +13,18 @@ shinyUI(fluidPage(
       
       selectInput("var", 
                   label = "Choose a variable to display",
-                  choices = c("1", "2",
-                              "3", "4"),
-                  selected = "1")
+                  choices = c("Parker & grönområden", "Mångfald i bostadsutbudet",
+                              "Levandegöra gemensamma platser", "Kommunikationer")
+                  )
     ),
+                  
+ 
          
-mainPanel(leafletOutput("map")
+mainPanel(leafletOutput("map"), textOutput("dynamicText"),
           
+          selectInput("radioB", "Färg",
+                       choices = c("Greens", "Reds", "Blues"))
+                        
           
 
 ))
