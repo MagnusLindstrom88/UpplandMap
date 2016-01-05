@@ -22,10 +22,12 @@ shinyUI(
                   draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
                   width = 330, height = "auto",
       
-      selectInput("var", 
-                  label = "Choose a variable to display",
-                  choices = c("Parker & grönområden", "Mångfald i bostadsutbudet",
-                              "Levandegöra gemensamma platser", "Kommunikationer")
+                  selectInput("var", 
+                              label = "Choose a variable to display",
+                              choices = c("Parker & grönområden", "Mångfald i bostadsutbudet",
+                                          "Levandegöra gemensamma platser", "Kommunikationer",
+                                          "Kultur & fritid","Utbildning","Omsorg","Skolan",
+                                          "Trygghet","Hållbar utveckling")
                   )
     )
     )            

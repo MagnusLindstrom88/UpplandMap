@@ -8,9 +8,6 @@ library(RColorBrewer)
 source("helper.R")
 
 
-# röd<-colorFactor("Reds", uv84$NAMN)
-# blå<-colorFactor("Blues", uv84$NAMN)
-# grön<-colorFactor("Greens", uv84$NAMN)
 
 shinyServer(function(input, output, session) {
   
@@ -25,37 +22,36 @@ shinyServer(function(input, output, session) {
      
   })
   
-  output$dynamicText <- renderText({
-    sprintf("Du har valt %s",input$radioB)
-  })
 
-  
-  färg<-reactive({
+  område_popup<-reactive({
+    
     områden<-karta(input$var)
-    colorFactor(input$radioB, områden$favorit)
-
+    z<-popup(input$var)
+   
     
+    område_popup <-paste( "<Strong>Område: </strong>",
+                          områden[,1],
+                          "<br><Strong>",z[1,],":</strong>",
+                          områden[,2],
+                          "<br><strong>",z[2,],":</strong>",
+                          områden[,3],
+                          "<br><strong>",z[3,],":</strong>",
+                          områden[,4],
+                          "<br><strong>",z[4,],":</strong>",
+                          områden[,5],
+                          "<br><strong>",z[5,],":</strong>",
+                          områden[,6])
   })
   
-#   observe({
-#     pal<-färg()
-#     
-#     leafletProxy("map")%>%
-#       clearShapes()%>%
-#       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-#                   popup = htmlEscape(uv84$NAMN), color = ~pal(testata$favorit))
-#    
-#   })
-#   
   observe({
-    
+    pop_up<-område_popup()
     områden<-karta(input$var)
     factpal <- colorFactor(topo.colors(5), områden$favorit)
     leafletProxy("map")%>%
       clearShapes()%>%
       clearControls()%>%
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-                  popup = htmlEscape(områden$favorit), color = ~factpal(områden$favorit))%>%
+                  popup = pop_up, color = ~factpal(områden$favorit))%>%
     addLegend("bottomleft", pal = factpal, values = områden$favorit
              
     )
