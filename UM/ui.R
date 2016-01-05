@@ -6,9 +6,9 @@ library(sp)
 
 shinyUI(
   
-  navbarPage("Superzip", id="nav",
+  navbarPage("Xplor", id="nav",
                              
-  tabPanel("Interactive map",
+  tabPanel("Interaktiv karta",
            
     div(class = "outer",
      tags$head(
