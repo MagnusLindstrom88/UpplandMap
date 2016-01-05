@@ -31,29 +31,34 @@ shinyServer(function(input, output, session) {
 
   
   färg<-reactive({
-    colorFactor(input$radioB, testata$favorit)
-    # toupper(input$radioB)
+    områden<-karta(input$var)
+    colorFactor(input$radioB, områden$favorit)
+
     
   })
   
+#   observe({
+#     pal<-färg()
+#     
+#     leafletProxy("map")%>%
+#       clearShapes()%>%
+#       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
+#                   popup = htmlEscape(uv84$NAMN), color = ~pal(testata$favorit))
+#    
+#   })
+#   
   observe({
-    pal<-färg()
     
-    leafletProxy("map")%>%
-      clearShapes()%>%
-      addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-                  popup = htmlEscape(uv84$NAMN), color = ~pal(testata$favorit))
-   
-  })
-  
-  observe({
-  
     områden<-karta(input$var)
     factpal <- colorFactor(topo.colors(5), områden$favorit)
     leafletProxy("map")%>%
       clearShapes()%>%
+      clearControls()%>%
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-                  popup = htmlEscape(områden$favorit), color = ~factpal(områden$favorit))
+                  popup = htmlEscape(områden$favorit), color = ~factpal(områden$favorit))%>%
+    addLegend("bottomleft", pal = factpal, values = områden$favorit
+             
+    )
     
   })
   
