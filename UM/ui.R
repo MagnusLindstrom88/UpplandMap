@@ -16,14 +16,14 @@ shinyUI(
      ),
         
       
-      leafletOutput("map"),
+      leafletOutput("map", width = "100%", height = "100%"),
  
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
                   draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                  width = 330, height = "auto",
+                  width = 300, height = "auto",
       
                   selectInput("var", 
-                              label = "Choose a variable to display",
+                              label = h4("Choose a variable to display"),
                               choices = c("Parker & grönområden", "Mångfald i bostadsutbudet",
                                           "Levandegöra gemensamma platser", "Kommunikationer",
                                           "Kultur & fritid","Utbildning","Omsorg","Skolan",

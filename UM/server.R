@@ -45,6 +45,7 @@ shinyServer(function(input, output, session) {
   
   observe({
     pop_up<-område_popup()
+    z<-popup(input$var)
     områden<-karta(input$var)
     factpal <- colorFactor(topo.colors(5), områden$favorit)
     leafletProxy("map")%>%
@@ -52,7 +53,7 @@ shinyServer(function(input, output, session) {
       clearControls()%>%
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
                   popup = pop_up, color = ~factpal(områden$favorit))%>%
-    addLegend("bottomleft", pal = factpal, values = områden$favorit
+    addLegend("bottomleft", pal = factpal, values = z[,1]
              
     )
     
