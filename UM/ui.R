@@ -2,6 +2,7 @@ require(shiny)
 require(leaflet)
 require(magrittr)
 require(sp)
+library(shinyjs)
 
 
 shinyUI(
@@ -29,12 +30,26 @@ shinyUI(
                                           "Kultur & fritid","Utbildning","Omsorg","Skolan",
                                           "Trygghet","Hållbar utveckling")
                   ),
-
-                    checkboxGroupInput("Check1",label=h4 ("Kön:"), choices = levels(data3$Kön)),
-                    checkboxGroupInput("Check2",label=h4 ("Utbildningsnivå:"), choices = levels(data3$Utbildningsnivå)),
-                    checkboxGroupInput("Check3",label=h4 ("Sysselsättning:"), choices = levels(data3$Sysselsättning)),
-                    checkboxGroupInput("Check4",label=h4 ("Tid I Uppväs:"), choices = levels(data3$Tid.i.UppVäs)),
-                    checkboxGroupInput("Check5",label=h4 ("Ålder:"), choices = levels(data3$Ålder))
+                    shinyjs::useShinyjs(),
+                    actionButton("könButton",label = "Kön"),
+                    hidden(
+                    checkboxGroupInput("Check1",label=h4 (""), choices = levels(data3$Kön))),
+                    br(),
+                    actionButton("utbildningButton",label = "Utbildningsnivå"),
+                    hidden(
+                    checkboxGroupInput("Check2",label=h4 (""), choices = levels(data3$Utbildningsnivå))),
+                    br(),
+                    actionButton("sysselsättningButton",label = "Sysselsättning"),
+                    hidden(  
+                    checkboxGroupInput("Check3",label=h4 (""), choices = levels(data3$Sysselsättning))),
+                    br(),
+                    actionButton("tidIUppväsButton",label = "Tid I Uppväs"),
+                    hidden(
+                    checkboxGroupInput("Check4",label=h4 (""), choices = levels(data3$Tid.i.UppVäs))),
+                    br(),
+                    actionButton("ålderButton",label = "Ålder"),
+                    hidden(
+                    checkboxGroupInput("Check5",label=h4 (""), choices = levels(data3$Ålder)))
 
 
     )

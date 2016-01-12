@@ -4,6 +4,7 @@ require(magrittr)
 require(sp)
 require(htmltools)
 library(dplyr)
+library(shinyjs)
 source("helper.R")
 
 
@@ -18,6 +19,7 @@ shinyServer(function(input, output, session) {
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
                   popup = htmlEscape(uv84$NAMN))%>%
        addProviderTiles("CartoDB.Positron")
+
      
   })
   
@@ -26,8 +28,22 @@ shinyServer(function(input, output, session) {
    boxCheck<-c(input$Check1,input$Check2,input$Check3,input$Check4,input$Check5)
    print(is.null(boxCheck))
     
+  })
   
-    
+  observeEvent(input$könButton, {
+    toggle("Check1")
+  })
+  observeEvent(input$utbildningButton, {
+    toggle("Check2")
+  })
+  observeEvent(input$sysselsättningButton, {
+    toggle("Check3")
+  })
+  observeEvent(input$tidIUppväsButton, {
+    toggle("Check4")
+  })
+  observeEvent(input$ålderButton, {
+    toggle("Check5")
   })
 
   område_popup<-reactive({
