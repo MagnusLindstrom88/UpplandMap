@@ -7,7 +7,7 @@ round_df <- function(x, digits) {
   x
 }
 
-karta<- function(x){
+karta<- function(x,v){
   
   y<-switch(x,
             "Parker & grönområden" = c("Area","X1a","X1b","X1c","X1d","X1e"),
@@ -21,11 +21,18 @@ karta<- function(x){
             "Trygghet" = c("Area","X9a","X9b","X9c","X9d","X9e"),
             "Hållbar utveckling" = c("Area","X10a","X10b","X10c","X10d","X10e")
   )
-  
-  
-  y<-subset(cleanRound,select=y)
+  if(is.null(v)){
+  y<-subset(clean4,select=y)
+  y<-internal_popup(x,y)
   y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
-  y
+  return(y)
+ } else{
+   y<-subset(v,select=y)
+   y<-internal_popup(x,y)
+   y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
+   return(y)
+  }
+  
 }
 
 popup<-function(x){
@@ -45,8 +52,28 @@ popup<-function(x){
   
   
   z<-subset(fragor,select=z)
-  
-  
+
   return(z)        
   
 }
+internal_popup<-function(x,y){
+  
+  z<-switch(x,
+            "Parker & grönområden" = c("F1"),
+            "Mångfald i bostadsutbudet" =c("F2"),
+            "Levandegöra gemensamma platser" =c("F3"),
+            "Kommunikationer" = c("F4"),
+            "Kultur & fritid" = c("F5"),
+            "Utbildning" = c("F6"),
+            "Omsorg" = c("F7"),
+            "Skolan" = c("F8"),
+            "Trygghet" = c("F9"),
+            "Hållbar utveckling" = c("F10")
+  )
+  
+  z<-subset(fragor,select=z)
+  names(y)<-c("Bostadsområde",t(z))
+  return(y)        
+  
+}
+
