@@ -7,7 +7,9 @@ library(dplyr)
 library(shinyjs)
 source("helper.R")
 
-
+fragor<-readRDS("fragor.rda")
+data3<-read.csv("data3.csv")
+data5<-readRDS("data5.rda")
 
 shinyServer(function(input, output, session) {
   
@@ -23,12 +25,6 @@ shinyServer(function(input, output, session) {
      
   })
   
-  boxCheck<-reactive({
-    
-   boxCheck<-c(input$Check1,input$Check2,input$Check3,input$Check4,input$Check5)
-   print(is.null(boxCheck))
-    
-  })
   
   observeEvent(input$könButton, {
     toggle("Check1")
@@ -48,9 +44,8 @@ shinyServer(function(input, output, session) {
 
   område_popup<-reactive({
     
-    box<-boxCheck()
-    if(box==TRUE){
-    områden<-karta(input$var,NULL)
+
+    områden<-urval()
     z<-popup(input$var)
     område_popup <-paste( "<Strong>Område: </strong>",
                           områden[,1],
@@ -64,33 +59,14 @@ shinyServer(function(input, output, session) {
                           områden[,5],
                           "<br><strong>",z[5,],":</strong>",
                           områden[,6])
-    } else{   
-    
-      
-    områden<-urval()
-     z<-popup(input$var)
-    
-    område_popup <-paste( "<Strong>Område: </strong>",
-                          områden[,1],
-                          "<br><Strong>",z[1,],":</strong>",
-                          områden[,2],
-                          "<br><strong>",z[2,],":</strong>",
-                          områden[,3],
-                          "<br><strong>",z[3,],":</strong>",
-                          områden[,4],
-                          "<br><strong>",z[4,],":</strong>",
-                          områden[,5],
-                          "<br><strong>",z[5,],":</strong>",
-                          områden[,6])}
+
     
   })
   
   observe({
     
-    box<-boxCheck()
-    if(box==TRUE){
     pop_up<-område_popup()
-    områden<-karta(input$var,NULL)
+    områden<-urval()
     factpal <- colorFactor(topo.colors(5), områden$favorit)
     leafletProxy("map")%>%
       clearShapes()%>%
@@ -98,37 +74,20 @@ shinyServer(function(input, output, session) {
       addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
                   popup = pop_up, color = ~factpal(områden$favorit))%>%
       addLegend("bottomleft", pal = factpal, values = områden$favorit, title ="Frågor" )
-        } else{
-          pop_up<-område_popup()
-          områden<-urval()
-          factpal <- colorFactor(topo.colors(5), områden$favorit)
-          leafletProxy("map")%>%
-            clearShapes()%>%
-            clearControls()%>%
-            addPolygons(data=uv84, weight = 2, fillOpacity = 0.5, smoothFactor = 0.5,
-                        popup = pop_up, color = ~factpal(områden$favorit))%>%
-            addLegend("bottomleft", pal = factpal, values = områden$favorit, title ="Frågor" )
-        }
-    
+        
     
   })
 
 urval<-function(){
-
-  box<-boxCheck()
-  if(box==FALSE){  
   
   y<-data3  
   
 if(!is.null(input$Check1)){
    c1<-input$Check1  
-  
   y<-subset(y,Kön==c1)
-  
 }
     
 if(!is.null(input$Check2)){
-   
    c2<-input$Check2  
    y<-subset(y,Utbildningsnivå==c2)
 }
@@ -151,10 +110,7 @@ if(!is.null(input$Check2)){
   cleanY2<-round_df(y3,1)
   cleanY2<-karta(input$var,cleanY2)
   return(cleanY2)
-  }else{
   
-    NULL
-}
   
   }
   

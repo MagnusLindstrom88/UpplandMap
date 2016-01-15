@@ -1,10 +1,8 @@
 round_df <- function(x, digits) {
-  # round all numeric variables
-  # x: data frame 
-  # digits: number of digits to round
+
   numeric_columns <- sapply(x, class) == 'numeric'
   x[numeric_columns] <-  round(x[numeric_columns], digits)
-  x
+  return(x)
 }
 
 karta<- function(x,v){
@@ -21,17 +19,30 @@ karta<- function(x,v){
             "Trygghet" = c("Area","X9a","X9b","X9c","X9d","X9e"),
             "Hållbar utveckling" = c("Area","X10a","X10b","X10c","X10d","X10e")
   )
-  if(is.null(v)){
-  y<-subset(clean4,select=y)
-  y<-internal_popup(x,y)
-  y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
-  return(y)
- } else{
-   y<-subset(v,select=y)
-   y<-internal_popup(x,y)
-   y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
-   return(y)
-  }
+
+   a<-subset(v,select=y)
+   a<-internal_popup(x,a)
+   a$favorit = names(a)[-1][apply(a[-1],1,which.max)]
+   antalRader<-nrow(a) 
+   if(!antalRader==43){
+   b<- data5
+   b2<-subset(b,select=y)
+   b3<-b2 %>%group_by(Area) %>%summarise_each(funs(mean))
+   class(b3) <- "data.frame"
+   part<-b3[!b3$Area %in% a$Area,]
+   part<-internal_popup(x,part)
+   part$favorit = "Ingen data"
+   a<-rbind(a[!a$Area %in% part$Area,], part)
+   order.a<-order(a$Area)
+   a<-a[order.a,]
+   return(a)
+   } else{
+     y<-subset(v,select=y)
+     y<-internal_popup(x,y)
+     y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
+     return(y)
+}
+  
   
 }
 
@@ -72,7 +83,7 @@ internal_popup<-function(x,y){
   )
   
   z<-subset(fragor,select=z)
-  names(y)<-c("Bostadsområde",t(z))
+  names(y)<-c("Area",t(z))
   return(y)        
   
 }
