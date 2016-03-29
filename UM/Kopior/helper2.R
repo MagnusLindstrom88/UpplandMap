@@ -1,5 +1,7 @@
 round_df <- function(x, digits) {
-
+  # round all numeric variables
+  # x: data frame 
+  # digits: number of digits to round
   numeric_columns <- sapply(x, class) == 'numeric'
   x[numeric_columns] <-  round(x[numeric_columns], digits)
   return(x)
@@ -19,26 +21,17 @@ karta<- function(x,v){
             "Trygghet" = c("Area","X9a","X9b","X9c","X9d","X9e"),
             "Hållbar utveckling" = c("Area","X10a","X10b","X10c","X10d","X10e")
   )
-
-   a<-subset(v,select=y)
-   a<-internal_popup(x,a)
-   a$favorit = names(a)[-1][apply(a[-1],1,which.max)]
-   antalRader<-nrow(a) 
-   if(!antalRader==43){
-   b<- data6
-   b3<-subset(b,select=y)
-   part<-b3[!b3$Area %in% a$Area,]
-   part<-internal_popup(x,part)
-   part$favorit = NA
-   a<-rbind(a[!a$Area %in% part$Area,], part)
-   order.a<-order(a$Area)
-   a<-a[order.a,]
-   return(a)
-   } else{
-
-     return(a)
-}
-  
+  if(is.null(v)){
+  y<-subset(clean4,select=y)
+  y<-internal_popup(x,y)
+  y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
+  return(y)
+ } else{
+   y<-subset(v,select=y)
+   y<-internal_popup(x,y)
+   y$favorit = names(y)[-1][apply(y[-1],1,which.max)]
+   return(y)
+  }
   
 }
 
@@ -76,62 +69,11 @@ internal_popup<-function(x,y){
             "Skolan" = c("F8"),
             "Trygghet" = c("F9"),
             "Hållbar utveckling" = c("F10")
-            
-            
   )
   
   z<-subset(fragor,select=z)
-  names(y)<-c("Area",t(z))
+  names(y)<-c("Bostadsområde",t(z))
   return(y)        
   
 }
 
-numeric_map<- function(n,m){
- 
-   z<-switch(n,
-             "Välj ett alternativ" = c("Area"), 
-             "Vatten eller bostäder" = c("Area","X12"),
-             "Service eller grönområden" = c("Area","X13"),
-             "Centralort eller mindre tätort" = c("Area","X14")
-             )
-
-
-   a<-subset(m,select=z)
-   colnames(a)[2]<-"data"
-   antalRader<-nrow(a)
-  
-   if(!antalRader==43){
-     b<- data6
-     
-     b3<-subset(b,select=z)
-     part<-b3[!b3$Area %in% a$Area,]
-     colnames(part)[2]<-"data"
-     part$data = NA
-     a<-rbind(a[!a$Area %in% part$Area,], part)
-     order.a<-order(a$Area)
-     a<-a[order.a,]
-     
-     return(a)
-   } else{
-     
-
-  
-     return(a)
-   }
-   
-}
-
-numeric_legend<-function(x){
- 
-   q<-switch(x,
-            "Välj ett alternativ" = c("Area"), 
-            "Vatten eller bostäder" = c("F12"),
-            "Service eller grönområden" = c("F13"),
-            "Centralort eller mindre tätort" = c("F14")
-  )
-   q1<-subset(fragor2,select=q)
-   
-   return(q1)
-   
-  
-}

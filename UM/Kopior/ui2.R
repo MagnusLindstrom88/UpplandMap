@@ -50,18 +50,12 @@ shinyUI(
                     br(),
                     actionButton("ålderButton",label = "Ålder"),
                     hidden(
-                    checkboxGroupInput("Check5",label=h4 (""), choices = levels(data3$Ålder))),
-                  
-                  selectInput("var2", 
-                              label = h4("Välj ett ämne"),
-                              choices = c("Välj ett alternativ", "Vatten eller bostäder",
-                                          "Service eller grönområden", "Centralort eller mindre tätort")
-                                        )
-                  )
+                    checkboxGroupInput("Check5",label=h4 (""), choices = levels(data3$Ålder)))
 
 
     )
     )            
     )
         
+)
 )
