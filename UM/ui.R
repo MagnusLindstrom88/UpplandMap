@@ -24,7 +24,7 @@ shinyUI(
                   width = 300, height = "auto",
       
                   selectInput("var", 
-                              label = h4("Välj ett ämne"),
+                              label = h4("Välj ett tema"),
                               choices = c("Parker & grönområden", "Mångfald i bostadsutbudet",
                                           "Levandegöra gemensamma platser", "Kommunikationer",
                                           "Kultur & fritid","Utbildning","Omsorg","Skolan",
@@ -53,7 +53,7 @@ shinyUI(
                     checkboxGroupInput("Check5",label=h4 (""), choices = levels(data3$Ålder))),
                   
                   selectInput("var2", 
-                              label = h4("Välj ett ämne"),
+                              label = h4("Vad är viktigast?"),
                               choices = c("Välj ett alternativ", "Vatten eller bostäder",
                                           "Service eller grönområden", "Centralort eller mindre tätort")
                                         )

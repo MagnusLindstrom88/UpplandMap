@@ -114,7 +114,7 @@ shinyServer(function(input, output, session) {
       leafletProxy("map")%>%
         clearShapes()%>%
         clearControls()%>%
-        addPolygons(data=uv84, weight = 2, fillOpacity = 0.8, smoothFactor = 0.5,
+        addPolygons(data=uv84, weight = 2, fillOpacity = 0.6, smoothFactor = 0.5,
                     popup = pop_up, color = ~colorTest(faktorTest))%>%
         addLegend("bottomleft", pal = colorTest, values = faktorTest, na.label ="Ingen data", title =legendvar[1,1] )
       } else{
